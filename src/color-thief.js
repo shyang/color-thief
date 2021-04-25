@@ -1,5 +1,6 @@
 import quantize from '../node_modules/quantize/dist/index.mjs';
 import core from './core.js';
+import colorsys from '../node_modules/colorsys/colorsys.js';
 
 /*
  * Color Thief v2.3.2
@@ -58,7 +59,32 @@ var ColorThief = function () {};
 ColorThief.prototype.getColor = function(sourceImage, quality = 10) {
     const palette       = this.getPalette(sourceImage, 5, quality);
     const dominantColor = palette[0];
-    return dominantColor;
+    let {h, s, v} = colorsys.rgb_to_hsv({
+        r: dominantColor[0],
+        g: dominantColor[1],
+        b: dominantColor[2],
+    });
+    if (s <= 5 || s > 70) {
+        // ignore
+    } else if (s <= 10) {
+        s += 10;
+    } else if (s <= 30) {
+        s += 30;
+    } else if (s <= 40) {
+        s += 20;
+    } else if (s <= 50) {
+        s += 10;
+    } else if (s <= 70) {
+        s += 5;
+    }
+    if (v > 50) {
+        v = 45;
+    } else if (v > 30) {
+        v -= 10;
+    }
+    let {r, g, b} = colorsys.hsv_to_rgb({h, s, v})
+    console.log({r,g,b})
+    return [r, g, b];
 };
 
 

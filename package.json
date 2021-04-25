@@ -48,6 +48,7 @@
         "mustache": "^3.0.1"
     },
     "dependencies": {
+        "colorsys": "1.0.22",
         "get-pixels": "^3.3.2",
         "quantize": "github:lokesh/quantize"
     }
